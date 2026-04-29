@@ -34,13 +34,13 @@ plot <- DimPlot(seu, reduction = "umap", group.by = "cellType", label = F, raste
   labs(title = NULL) 
 plot
 ggsave(
-  filename = "seu_dimplot.eps",   # 保存文件名
-  plot = plot,          # 保存的 ggplot 对象（比如第一个图）
-  device = "eps",             # 选择 eps 格式
-  width = 8,                  # 图宽（单位：英寸）
-  height = 6,                 # 图高（单位：英寸）
-  units = "in",               # 尺寸单位（可以是 "in", "cm", 或 "mm"）
-  dpi = 300                   # 分辨率（适用于光栅格式，但仍然推荐设定）
+  filename = "seu_dimplot.eps",   
+  plot = plot,          
+  device = "eps",             
+  width = 8,                  
+  height = 6,                 
+  units = "in",             
+  dpi = 300            
 )
 
 sample_colors <- c("CRN" = "#3d7dba",
@@ -52,13 +52,13 @@ plot <- DimPlot(seu, reduction = "umap", group.by = "sampleType", label = F, ras
   labs(title = NULL)
 plot
 ggsave(
-  filename = "seu_sample_dimplot.eps",   # 保存文件名
-  plot = plot,          # 保存的 ggplot 对象（比如第一个图）
-  device = "eps",             # 选择 eps 格式
-  width = 8,                  # 图宽（单位：英寸）
-  height = 6,                 # 图高（单位：英寸）
-  units = "in",               # 尺寸单位（可以是 "in", "cm", 或 "mm"）
-  dpi = 300                   # 分辨率（适用于光栅格式，但仍然推荐设定）
+  filename = "seu_sample_dimplot.eps",   
+  plot = plot,       
+  device = "eps",            
+  width = 8,              
+  height = 6,                
+  units = "in",            
+  dpi = 300     
 )
 
 # fig1c
@@ -104,7 +104,7 @@ cd8t_colors <- c("CD8T_CCR7" = "#87c097",
                  "CD8T_GZMK" = "#166a3b",
                  "CD8T_FGFBP2" = "#00b8c4",
                  "CD8T_CXCL13" = "#c571ac",
-                 "CD8T_HSP1A" = "#c2aed1",
+                 "CD8T_HSPA1A" = "#c2aed1",
                  "CD8T_CD160" = "#9775b7",
                  "CD8T_MAIT" = "#feac75")
 
@@ -122,7 +122,7 @@ CD8T_markers <- c("SELL","LEF1","TCF7","CCR7",
                   "HSPA1A","HSPA1B","HSP90AA1","HSP90AB1","ISG15")
 cd8t_matrix <- AverageExpression(cd8t_1, slot = "scale.data")[[1]]  
 order_index <- match(CD8T_markers, rownames(cd8t_matrix))
-col_index <- match(c("CD8T_CCR7","CD8T_GZMK","CD8T_FGFBP2","CD8T_CD160","CD8T_MAIT","CD8T_HSP1A","CD8T_CXCL13"),colnames(cd8t_matrix))
+col_index <- match(c("CD8T_CCR7","CD8T_GZMK","CD8T_FGFBP2","CD8T_CD160","CD8T_MAIT","CD8T_HSPA1A","CD8T_CXCL13"),colnames(cd8t_matrix))
 cd8t_matrix <- cd8t_matrix[order_index, ]
 cd8t_matrix <- cd8t_matrix[, col_index]
 cd8t_matrix[cd8t_matrix > 2] = 2;cd8t_matrix[cd8t_matrix < -2] = -2
@@ -144,7 +144,7 @@ Ro_e <- clusters_SID_ob/clusters_SID_exp
 # range01 <- function(x, ...){(x - min(x, ...)) / (max(x, ...) - min(x, ...))}
 # Ro_e_01 <- t(apply(Ro_e, 1, range01))
 bk <- c(seq(0, 1, by = 0.01), seq(1.01, 2, by = 0.01))
-col_index <- match(c("CD8T_CCR7","CD8T_GZMK","CD8T_FGFBP2","CD8T_CD160","CD8T_MAIT","CD8T_HSP1A","CD8T_CXCL13"),colnames(Ro_e))
+col_index <- match(c("CD8T_CCR7","CD8T_GZMK","CD8T_FGFBP2","CD8T_CD160","CD8T_MAIT","CD8T_HSPA1A","CD8T_CXCL13"),colnames(Ro_e))
 Ro_e <- Ro_e[, col_index]
 
 Ro_e %>%
@@ -165,7 +165,7 @@ Ro_e %>%
 tmp_info <- select(cd8t_1@meta.data, "sampleType", "cell_annotation")
 # 设置 sampleType 的顺序
 tmp_info$sampleType <- factor(tmp_info$sampleType, levels = c("PLN", "WBC", "CRN", "CRT"))
-tmp_info$cell_annotation <- factor(tmp_info$cell_annotation, levels = rev(c("CD8T_CCR7","CD8T_GZMK","CD8T_FGFBP2","CD8T_CD160","CD8T_MAIT","CD8T_HSP1A","CD8T_CXCL13")))
+tmp_info$cell_annotation <- factor(tmp_info$cell_annotation, levels = rev(c("CD8T_CCR7","CD8T_GZMK","CD8T_FGFBP2","CD8T_CD160","CD8T_MAIT","CD8T_HSPA1A","CD8T_CXCL13")))
 tmp_info %>%
   dplyr::count(sampleType, cell_annotation) %>% 
   group_by(sampleType) %>%           # 按sampleType分组
@@ -177,7 +177,6 @@ tmp_info %>%
   # ggtitle("Proportional Stacked Bar Chart of Cell Class by Sample Type") +
   scale_fill_manual(values = cd8t_colors)
 
-# fig1h
 tmp_info <- select(cd8t_1@meta.data, "sampleType", "exhaustion.score")
 tmp_info$sampleType <- factor(tmp_info$sampleType, levels = c("WBC", "PLN", "CRN", "CRT"))
 compaired <- list(c("CRN","CRT"),
@@ -221,7 +220,7 @@ ggplot(data = cd8t_tmp.df[cd8t_tmp.df$cell_class %in% c("Tnaive","Ttsm","Tpex"),
   geom_hline(yintercept = 0.14, linetype = "dashed", color = "black", size = 0.5) +
   geom_segment(aes(y = 0.14, yend = max(cd8t_tmp.df$prog.score), x = 0.3, xend = 0.3), linetype = "dashed", color = "black", size = 0.5) +
   theme_classic() +
-  scale_y_continuous(name = "Effector.memory score") +
+  scale_y_continuous(name = "Memory score") +
   scale_x_continuous(name = "Naive score")
 
 ggplot(data = cd8t_tmp.df[cd8t_tmp.df$cell_class %in% c("Tex_int","Tex_term","Tex_eff"),], 
@@ -306,7 +305,6 @@ p2 <- ggplot(data = cd8t_tmp.df, aes(x = cell_class, y = exhaustion_score, fill 
     map_signif_level = TRUE,
     test = wilcox.test
   )
-
 combined_plot <- wrap_plots(p1,p2,ncol = 1,nrow = 2)
 
 # fig2f
@@ -458,7 +456,6 @@ p <- deg_result %>%
     axis.text = element_text(color = "#000000", size = 8),
     axis.title = element_text(color = "#000000", size = 10)
   )
-
 p
 
 # fig3b
@@ -482,17 +479,17 @@ ego_bp <- mutate(ego_bp,
 ego_bp <- ego_bp[order(ego_bp$GeneRatio, decreasing = TRUE),]
 # ego_bp$Description <- factor(ego_bp$Description, levels = ego_bp$Description)
 
-ego_bp_top20 <- ego_bp[1:20,]
-ego_bp_top20 <- ego_bp_top20[order(ego_bp_top20$GeneRatio, decreasing = FALSE),]
-ego_bp_top20$Description <- factor(ego_bp_top20$Description, levels = ego_bp_top20$Description)
+ego_bp_top10 <- ego_bp[1:10,]
+ego_bp_top10 <- ego_bp_top10[order(ego_bp_top10$GeneRatio, decreasing = FALSE),]
+ego_bp_top10$Description <- factor(ego_bp_top10$Description, levels = ego_bp_top10$Description)
 
-ego_bp_top20$Description_wrapped <- str_wrap(ego_bp_top20$Description, width = 30)
+ego_bp_top10$Description_wrapped <- str_wrap(ego_bp_top10$Description, width = 30)
 # 绘图
-ggplot(ego_bp_top20, aes(x = GeneRatio, y = Description)) +
+ggplot(ego_bp_top10, aes(x = GeneRatio, y = Description)) +
   geom_segment(aes(x = 0, xend = GeneRatio, y = Description, 
                    yend = Description, color = -log10(p.adjust)), size = 1.5) + # 调整线段粗细
   geom_point(aes(size = Count, color = -log10(p.adjust))) +
-  scale_y_discrete(labels = ego_bp_top20$Description_wrapped) + # 使用换行后的标签
+  scale_y_discrete(labels = ego_bp_top10$Description_wrapped) + # 使用换行后的标签
   scale_color_gradient(low = "#fdc5b8", high = "#d85152") +
   labs(
     x = "GeneRatio",
@@ -528,15 +525,16 @@ ggplot(tf.df, aes(x = cellType, y = Topic, size = RSS, color = Z)) +
     axis.title.y = element_blank()   # Remove y-axis title
   )
 
-# fig3e
-cd8_texeff_mif_results <- read_excel("cd8_texeff_mif_results.xlsx")
-cd8_texeff_mif_results$class <- ifelse(str_sub(cd8_texeff_mif_results$region,1,1) == "t","Tumor region","Normal region")
-compaired <- c("Tumor region","Normal region")
-ggplot(data = cd8_texeff_mif_results, aes(x = class, y = density_texeff, color = class)) +
-  geom_boxplot(aes(fill = class), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
+# fig3d
+cd8texeff_info$Sample <- factor(cd8texeff_info$Sample, levels = c("Tumor","Invasion","Normal"))
+compaired <- list(c("Tumor", "Invasion"),
+                  c("Normal","Tumor"),
+                  c("Invasion", "Normal"))
+ggplot(data = cd8texeff_info, aes(x = Sample, y = Ratio_CD8, color = Sample)) +
+  geom_boxplot(aes(fill = Sample), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
   geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
   # geom_text(aes(label = PID)) +
-  scale_y_continuous(name = "Density of Texeff cells/ROI") +
+  scale_y_continuous(name = "Ratio of CD8_Texeff/CD8+T") +
   scale_x_discrete(name = "") +
   # ggtitle("Boxplot of CD8+ Tcell") +
   theme_classic() +
@@ -545,15 +543,136 @@ ggplot(data = cd8_texeff_mif_results, aes(x = class, y = density_texeff, color =
         axis.title = element_text(face = "bold"),
         axis.text.x = element_text(size = 11),
         legend.position = "none") +
-  scale_color_manual(values = c("Normal region" = "#3d7dba",
-                                "Tumor region" = "#c6a5cb")) +
-  scale_fill_manual(values = c("Normal region" = "#3d7dba",
-                               "Tumor region" = "#c6a5cb")) 
+  scale_color_manual(values = c("Normal" = "#3d7dba",
+                                "Tumor" = "#c6a5cb")) +
+  scale_fill_manual(values = c("Normal" = "#3d7dba",
+                               "Tumor" = "#c6a5cb")) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
 
-cd8_texeff_mif_results$class <- factor(cd8_texeff_mif_results$class)
-oneway_test(density_texeff ~ class, data = cd8_texeff_mif_results, distribution = "exact") 
+ggplot(data = cd8texeff_info, aes(x = Sample, y = Density, color = Sample)) +
+  geom_boxplot(aes(fill = Sample), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
+  geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
+  # geom_text(aes(label = PID)) +
+  scale_y_continuous(name = "Density of CD8_Texeff cells/ROI") +
+  scale_x_discrete(name = "") +
+  # ggtitle("Boxplot of CD8+ Tcell") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 14, face = "bold"),
+        text = element_text(size = 12),
+        axis.title = element_text(face = "bold"),
+        axis.text.x = element_text(size = 11),
+        legend.position = "none") +
+  scale_color_manual(values = c("Normal" = "#3d7dba",
+                                "Tumor" = "#c6a5cb")) +
+  scale_fill_manual(values = c("Normal" = "#3d7dba",
+                               "Tumor" = "#c6a5cb")) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
 
-# fig3f
+# fig3g
+flow_res.tmp <- dplyr::filter(flow_res, Cell_Group %in% c("TCF1-PD1hiGZMB+", "TCF1-PD1hiGZMB-"))
+df_long <- flow_res.tmp %>%
+  pivot_longer(
+    cols = c("IL-2_Ratio", "TNF-α_Ratio", "IFN-γ_Ratio"),
+    names_to = "Cytokine",
+    values_to = "Ratio"
+  )
+df_summary <- df_long %>%
+  group_by(Cell_Group, Cytokine) %>%
+  summarise(
+    mean = mean(Ratio),
+    sd = sd(Ratio),
+    .groups = "drop"
+  )
+
+library(cowplot)
+plot_fun <- function(cyt){
+  
+  df_plot <- df_long %>% filter(Cytokine == cyt)
+  df_sum  <- df_summary %>% filter(Cytokine == cyt)
+  
+  # 自定义颜色
+  my_colors <- c(
+    "#1f77b4", # 蓝
+    "#ff7f0e", # 橙
+    "#2ca02c", # 绿
+    "#d62728", # 红
+    "#9467bd", # 紫
+    "#8c564b", # 棕
+    "#e377c2", # 粉
+    "#7f7f7f", # 灰
+    "#bcbd22", # 黄绿
+    "#17becf"  # 青
+  )
+  
+  ggplot() +
+    # bar (mean)
+    geom_col(
+      data = df_sum,
+      aes(x = Cell_Group, y = mean),
+      fill = "white",
+      color = "black",
+      width = 0.7
+    ) +
+    # SD error bar
+    geom_errorbar(
+      data = df_sum,
+      aes(x = Cell_Group, ymin = mean - sd, ymax = mean + sd),
+      width = 0.2,
+      size = 0.6
+    ) +
+    # points (individual samples), now color = Cell_group
+    geom_point(
+      data = df_plot,
+      aes(x = Cell_Group, y = Ratio, color = Cell_Group),
+      fill = "white",
+      size = 2.5,
+      shape = 21,
+      stroke = 1,
+      position = position_jitter(width = 0.15)
+    ) +
+    scale_color_manual(values = my_colors) +
+    theme_cowplot() +   # 使用 cowplot 主题
+    labs(
+      x = "",
+      y = cyt,
+      # title = paste("Expression:", cyt),
+      color = "Cell group"
+    ) +
+    theme(
+      plot.title = element_text(hjust = 0.5, size = 14),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = "none"
+    )
+}
+
+p_IL2  <- plot_fun("IL-2_Ratio")
+p_TNF  <- plot_fun("TNF-α_Ratio")
+p_IFNG <- plot_fun("IFN-γ_Ratio")
+
+p_IL2
+p_TNF
+p_IFNG
+
+stat_res <- df_long %>%
+  group_by(Cytokine) %>%       # 每个细胞因子分别检验
+  wilcox_test(Ratio ~ Cell_Group) %>% 
+  adjust_pvalue(method = "BH") %>%
+  add_significance()
+stat_res
+
+(p_IL2 | p_TNF | p_IFNG) + plot_layout(guides = "collect")
+
+# fig3h
 # mki67+的CD8+T细胞大部分是tex-eff细胞
 FeaturePlot(cd8t_tmp, "MKI67")
 DimPlot(cd8t_tmp, group.by = "seurat_clusters") + ggsci::scale_color_igv()
@@ -576,7 +695,7 @@ ggplot(data = ratio, aes(x=free_annotation, y=proportion, fill=cell_class)) +  #
   scale_fill_manual(values = c("Tex_eff" = "#f9d580",
                                "else" = "lightgrey"))
 
-# fig3g
+# fig3i
 tmp_info <- dplyr::select(cd8t_tmp@meta.data, "cell_class", "Classification","exclusion", "CTaa")
 tmp_info <- na.omit(tmp_info) %>% dplyr::filter(!exclusion == "excluded")
 tmp_info$cell_class <- factor(tmp_info$cell_class, levels = c("Tnaive","Ttsm","Tpex","Tex_int","Tex_term","Tex_eff"))
@@ -592,7 +711,7 @@ tmp_info %>%
   scale_fill_manual(values = c("else" = "#dddce7",
                                "Tumor Specific" = "#c571ac"))
 
-# fig3h
+# fig3j
 # cd8t_tmp，Tex-eff中大克隆的占比最多
 tmp_info <- dplyr::select(cd8t_tmp@meta.data, "cell_class", "cloneType", "sampleType")
 tmp_info <- na.omit(tmp_info)
@@ -617,7 +736,7 @@ out <- Startrac.run(in.dat, verbose=F)
 toc()
 Startrac::plot(out,index.type="cluster.all", byPatient=F)
 
-# fig3i
+# fig3k
 head(cd8t_tmp@meta.data)
 tmp_info <- dplyr::select(cd8t_tmp@meta.data, "NeoTCR8", "cell_class")
 compaired <- list(c("Tnaive","Ttsm"),
@@ -649,7 +768,16 @@ ggplot(data = tmp_info, aes(x = cell_class, y = NeoTCR8)) +
     test = wilcox.test
   )
 
-# fig3k
+# fig3l
+ggplot(umap_data, aes(x = UMAP_1, y = UMAP_2, color = free_annotation)) +
+  geom_point(size = 0.2) +
+  scale_color_manual(values = c("CD8_Texeff" = "#f9d580",
+                                "Tumor reactive cell" = "#57afc6")) + 
+  theme_classic() +
+  theme(legend.text = element_text(size = 10)) +
+  guides(color = guide_legend(override.aes = list(size = 4))) 
+
+# fig3m
 cd8t_1$free_annotation <- ifelse(cd8t_1$cell_annotation == "CD8T_CXCL13", "CXCL13+CD8+T", "CXCL13-CD8+T")
 cd8t_1 <- SetIdent(cd8t_1, value = "free_annotation")
 # 提取UMAP坐标和注释数据
@@ -664,7 +792,7 @@ ggplot(umap_data, aes(x = UMAP_1, y = UMAP_2, color = free_annotation)) +
   theme(legend.text = element_text(size = 10)) +
   guides(color = guide_legend(override.aes = list(size = 4))) 
 
-# fig3l
+# fig3n
 tmp_info <- dplyr::select(cd8t_1@meta.data, "cell_class", "free_annotation", "sampleType")
 tmp_info <- na.omit(tmp_info)
 tmp_info$cell_annotation <- factor(tmp_info$cell_annotation, 
@@ -682,53 +810,64 @@ tmp_info %>%
   scale_fill_manual(values = cd8t_colors) +
   theme(legend.position = "none")  # 隐藏 legend
 
-# fig3m
-# CD8T_CXCL13细胞的cell_class组成
-tmp_info <- dplyr::select(cd8t_1@meta.data, "cell_class", "cell_annotation", "sampleType")
-tmp_info <- tmp_info[tmp_info$sampleType == "CRT" & tmp_info$cell_annotation == "CD8T_CXCL13",]
-tmp_info$cell_class <- factor(tmp_info$cell_class, c("Tnaive", "Ttsm", "Tpex", "Tex_int", "Tex_term", "Tex_eff"))
-tmp_info %>%
-  dplyr::count(cell_annotation,cell_class) %>% 
-  group_by(cell_annotation) %>%           # 按sampleType分组
-  mutate(proportion = n / sum(n)) %>%
-  ggplot(aes(x=cell_annotation, y=proportion, fill=cell_class)) +  # 创建堆积条形图
-  geom_bar(stat="identity") +
-  labs(y="Proportion", x="Cell Annotation", fill="Propotion") +
+# fig4a
+ggplot(data = cd8t_tmp.df[cd8t_tmp.df$cell_class %in% c("Tnaive","Ttsm","Tpex") & cd8t_tmp.df$State = "MSI" & cd8t_tmp.df$sampleType = "PLN",], aes(x = naive.score, y = prog.score)) +
+  stat_density_2d(aes(fill = after_stat(level)), geom = "polygon", alpha = 0.8, bins = 7, contour = TRUE) +  # 使用after_stat修正，调整透明度
+  scale_fill_gradientn(colors = c("#fcf1f0", "#fccccb", "#e3716e"),  # 设置颜色渐变
+                       values = scales::rescale(c(0, 0.5, 1)),  # 调整颜色在密度级别上的位置
+                       limits = c(0, NA)) +  # 设置下限，使低密度区域有颜色
+  geom_hline(yintercept = 0.14, linetype = "dashed", color = "black", size = 0.5) +
+  geom_segment(aes(y = 0.14, yend = max(cd8t_tmp.df$prog.score), x = 0.3, xend = 0.3), linetype = "dashed", color = "black", size = 0.5) +
   theme_classic() +
-  # ggtitle("Proportional Stacked Bar Chart of Cell Class by Sample Type") +
-  scale_fill_manual(values = ex_colors) +
-  theme(legend.position = "none")  # 隐藏 legend
+  scale_y_continuous(name = "Memory score") +
+  scale_x_continuous(name = "Naive score")
 
-# fig4a-b
-compaired <- list(c("MSI","MSS"))
-tmp_info <- select(cd8t_pln@meta.data, "tnaive.score", "tpex.score", "ttsm.score", "State")
-tmp_info <- pivot_longer(tmp_info, cols = 1:3, names_to = "seurat_clusters", values_to = "pct")
-tmp_info$seurat_clusters <- ifelse(tmp_info$seurat_clusters == "tnaive.score", "Tnaive", 
-                                   ifelse(tmp_info$seurat_clusters == "tpex.score", "Tpex", "Ttsm"))
-
-ggplot(data = tmp_info,  aes(x = State, y = pct, color = State)) +
-  geom_boxplot(aes(fill = State), alpha = 0.2, outlier.color = "white") +  # 使用 aes 设置 fill 参数
-  geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
-  scale_y_continuous(name = "Proportion of CD8+T cells in TdLN") +
+ggplot(data = cd8t_tmp.df[cd8t_tmp.df$cell_class %in% c("Tnaive","Ttsm","Tpex") & cd8t_tmp.df$State = "MSS" & cd8t_tmp.df$sampleType = "PLN",], aes(x = naive.score, y = prog.score)) +
+  stat_density_2d(aes(fill = after_stat(level)), geom = "polygon", alpha = 0.8, bins = 7, contour = TRUE) +  # 使用after_stat修正，调整透明度
+  scale_fill_gradientn(colors = c("#fcf1f0", "#fccccb", "#e3716e"),  # 设置颜色渐变
+                       values = scales::rescale(c(0, 0.5, 1)),  # 调整颜色在密度级别上的位置
+                       limits = c(0, NA)) +  # 设置下限，使低密度区域有颜色
+  geom_hline(yintercept = 0.14, linetype = "dashed", color = "black", size = 0.5) +
+  geom_segment(aes(y = 0.14, yend = max(cd8t_tmp.df$prog.score), x = 0.3, xend = 0.3), linetype = "dashed", color = "black", size = 0.5) +
   theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 12),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 x 轴的题目
-    axis.text.x = element_text(size = 11),
-    legend.position = "none"         # 去掉图例
+  scale_y_continuous(name = "Memory score") +
+  scale_x_continuous(name = "Naive score")
+
+# fig4b
+LN_data <- LN_data %>%
+  mutate(X = (XMin + XMax) / 2) %>%
+  mutate(Y = (YMin + YMax) / 2)
+LN_data_info <- dplyr::select(LN_data, "Analysis Region", "CD8+PD1+TCF1+", "X", "Y")
+LN_data_info$cell_annotation <- ifelse(LN_data_info$`CD8+PD1+TCF1+` == 1, "CD8_Tpex", "else")
+color_map <- c(
+  "else" = "#EAEAEA",     
+  "CD8_Tpex" = "#bdb5e1"
+)
+
+ggplot() +
+  # 先画“else”层
+  geom_point(
+    data = subset(LN_data_info, cell_annotation == "else"),
+    aes(x = X, y = Y, color = cell_annotation),
+    size = .1
   ) +
-  scale_color_manual(values = ms_colors) +
-  scale_fill_manual(values = ms_colors) +  # 设置 fill 的颜色
-  facet_wrap(~seurat_clusters, scales = "free_y") +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = FALSE,
-    test = wilcox.test,
-    color = "black"
+  geom_point(
+    data = subset(LN_data_info, cell_annotation %in% c("CD8_Tpex")),
+    aes(x = X, y = Y, color = cell_annotation),
+    size = .2
+  ) +
+  # 自定义颜色映射
+  scale_color_manual(values = color_map) +
+  # 自定义图例点大小
+  guides(color = guide_legend(override.aes = list(size = 5))) +
+  theme_cowplot() +
+  theme(
+    legend.title = element_blank(),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
   )
+
+# fig4c
 tmp_info <- data.frame(cd8t_tmp[, cd8t_tmp$sampleType== "CRT"]$PID, cd8t_tmp[, cd8t_tmp$sampleType == "CRT"]$cell_class)
 names(tmp_info) <- c("PID","seurat_clusters")
 tmp_info <- group_by(tmp_info, PID, seurat_clusters) %>%
@@ -739,6 +878,9 @@ aa <- group_by(tmp_info, PID) %>%
 tmp_info <- merge(tmp_info, aa, by = "PID")
 tmp_info$pct <- tmp_info$n/tmp_info$SUM
 tmp_info$State <- ifelse(tmp_info$PID %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42", "P44", "P48"), "MSI", "MSS")
+
+ms_colors <- c("MSI" = "#ED0000FF",
+               "MSS" = "#00468BFF")
 compaired <- list(c("MSI","MSS"))
 ggplot(data = tmp_info[tmp_info$seurat_clusters %in% c("Tex_int","Tex_eff","Tex_term"),], 
        aes(x = State, y = pct, color = State)) +
@@ -766,122 +908,72 @@ ggplot(data = tmp_info[tmp_info$seurat_clusters %in% c("Tex_int","Tex_eff","Tex_
     color = "black"
   )
 
-# fig4d
+# fig4e
+T_data <- T_data %>%
+  mutate(X = (XMin + XMax) / 2) %>%
+  mutate(Y = (YMin + YMax) / 2)
+T_data_info <- dplyr::select(T_data, "Analysis Region", "CD8+GZMB+TIM3+",
+                                    "X", "Y")
+T_data_info$cell_annotation <- ifelse(T_data_info$`CD8+GZMB+TIM3+` == 1, "CD8_Texeff", T_data_info$`Analysis Region`)
+table(T_data_info$cell_annotation)
+color_map <- c(
+  "IM" = "#acd6ea",       
+  "NR" = "#cfe0a6",
+  "TC" = "#fcf1f0",
+  "CD8_Texeff" = "#f9d580"
+)
+
+ggplot() +
+  geom_point(
+    data = subset(T_data_info, !cell_annotation == "CD8_Texeff"),
+    aes(x = X, y = Y, color = cell_annotation),
+    size = .1
+  ) +
+  geom_point(
+    data = subset(T_data_info, cell_annotation %in% c("CD8_Texeff")),
+    aes(x = X, y = Y, color = cell_annotation),
+    size = .2
+  ) +
+  # 自定义颜色映射
+  scale_color_manual(values = color_map) +
+  # 自定义图例点大小
+  guides(color = guide_legend(override.aes = list(size = 5))) +
+  theme_cowplot() +
+  theme(
+    legend.title = element_blank(),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  )
+
+# fig4f
 compaired <- c("MSI","MSS")
-ggplot(data = cd8_texeff_mif_results[cd8_texeff_mif_results$class == "Tumor region",], aes(x = State, y = density_texeff, color = State)) +
+ggplot(data = cd8texeff_info, aes(x = State, y = Ratio_CD8, color = State)) +
   geom_boxplot(aes(fill = State), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
   geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
   # geom_text(aes(label = PID)) +
-  scale_y_continuous(name = "Density of Texeff cells/ROI") +
+  scale_y_continuous(name = "Ratio of CD8_Texeff/CD8+T") +
   scale_x_discrete(name = "") +
   # ggtitle("Boxplot of CD8+ Tcell") +
   theme_classic() +
+  facet_wrap(.~Sample) +
   theme(plot.title = element_text(size = 14, face = "bold"),
         text = element_text(size = 12),
         axis.title = element_text(face = "bold"),
         axis.text.x = element_text(size = 11),
         legend.position = "none") +
   scale_color_manual(values = ms_colors) +
-  scale_fill_manual(values = ms_colors) 
-cd8_texeff_mif_results$State <- factor(cd8_texeff_mif_results$State)
-oneway_test(density_texeff ~ State, data = cd8_texeff_mif_results[cd8_texeff_mif_results$class == "Tumor region",], distribution = "exact") 
-
-# fig4e
-teff.deg <- FindMarkers(cd8t_tmp[,cd8t_tmp$cell_class == "Tex_eff"],
-                        ident.1 = "MSI", ident.2 = "MSS",
-                        min.pct = 0.25,  
-                        logfc.threshold = 0,
-                        group.by = "State")
-teff.deg.tmp <- arrange(teff.deg, desc(avg_log2FC))
-# 基因列表
-genes <- c(
-  "CXCL13", 
-  "CTLA4","HAVCR2","LAG3","TIGIT",
-  # "ITGAE", "ZNF683", 
-  "GZMB","GZMA","GZMH","KLRD1"
-)
-
-expression_data <- FetchData(tmp, vars = genes)
-state_data <- tmp@meta.data$State
-expression_data$State <- state_data
-expression_long <- melt(expression_data, id.vars = "State", variable.name = "Gene", value.name = "Expression")
-
-# 绘制小提琴图
-ggplot(expression_long, aes(x = State, y = Expression, fill = State)) +
-  geom_violin(trim = TRUE, scale = "width") +
-  facet_wrap(~Gene, scales = "free_y", ncol = 1) +
-  stat_summary(fun = median, geom = "point", size = 2, color = "white") +
   scale_fill_manual(values = ms_colors) +
-  theme_cowplot() +
-  theme(strip.text = element_text(size = 10, face = "bold"),
-        axis.text.x = element_text(hjust = 1),
-        legend.position = "none") +
-  labs(x = "", y = "Expression", fill = "State")
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
 
-# fig4f
-tmp_info <- data.frame(tex_tmp[, tex_tmp$sampleType == "CRT"]$PID, tex_tmp[, tex_tmp$sampleType == "CRT"]$cell_annotation_1)
-names(tmp_info) <- c("PID","seurat_clusters")
-tmp_info <- dplyr::group_by(tmp_info, PID, seurat_clusters) %>% 
-  dplyr::summarise(n = n())
-cd8t_info <- data.frame(cd8t_1[, cd8t_1$sampleType == "CRT"]$PID, cd8t_1[, cd8t_1$sampleType == "CRT"]$cell_annotation)
-names(cd8t_info) <- c("PID","seurat_clusters")
-cd8t_info <- dplyr::group_by(cd8t_info, PID, seurat_clusters) %>% 
-  dplyr::summarise(n = n())
-aa <- dplyr::group_by(cd8t_info, PID) %>% 
-  dplyr::summarise(SUM = sum(n))
-tmp_info <- merge(tmp_info, aa, by = "PID")
-tmp_info$pct <- tmp_info$n/tmp_info$SUM
-tmp_info$State <- ifelse(tmp_info$PID %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42"), "MSI", "MSS")
-ggplot(data = tmp_info[tmp_info$seurat_clusters %in% c("CD8T_CXCL13_MKI67", "CD8T_CXCL13_TNFRSF9"),], 
-       aes(x = seurat_clusters, y = pct, color = State)) +
-  geom_boxplot(aes(fill = State), alpha = 0.2, outlier.shape = NA) +  # 确保箱线图位置一致
-  geom_point(position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.75), size = 1) +  # 添加横向抖动
-  # scale_y_continuous(name = "Pct of Texeff cells") +
-  scale_x_discrete(name = "") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 12),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11),
-    legend.position = "none"
-  ) +
-  scale_color_manual(values = ms_colors) +
-  scale_fill_manual(values = ms_colors)
+cd8texeff_info$State <- factor(cd8texeff_info$State)
+oneway_test(Ratio_CD8 ~ State, data = cd8texeff_info[cd8texeff_info$Sample == "Normal",], distribution = "exact") 
 
 # fig4g
-# Tex-eff与临床特征的关系
-tmp_info <- data.frame(cd8t_1[, cd8t_1$sampleType== "CRT"]$PID, cd8t_1[, cd8t_1$sampleType == "CRT"]$cell_annotation)
-names(tmp_info) <- c("PID","seurat_clusters")
-tmp_info <- dplyr::group_by(tmp_info, PID, seurat_clusters) %>% 
-  dplyr::summarise(n = n())
-aa <- dplyr::group_by(tmp_info, PID) %>% 
-  dplyr::summarise(SUM = sum(n))
-
-tmp_info <- merge(tmp_info, aa, by = "PID")
-tmp_info$pct <- tmp_info$n/tmp_info$SUM
-tmp_info$State <- ifelse(tmp_info$PID %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42"), "MSI", "MSS")
-tmp_info$Stage <- ifelse(tmp_info$PID %in% c("P02", "P03", "P13", "P15", "P17", "P25", "P27"), "early", "late")
-tmp_info$Location <- ifelse(tmp_info$PID %in% c("P08", "P09", "P10", "P13", "P15", "P17", "P26"), "left", "right")
-
-head(tmp_info)
-tmp_info.1 <- subset(tmp_info, seurat_clusters == "CD8T_CXCL13")
-tmp_info.1$tex.eff.class <- ifelse(tmp_info.1$pct > median(tmp_info.1$pct), "high", "low")
-# 构建列联表
-table_data <- table(tmp_info.1$Stage, tmp_info.1$tex.eff.class)
-chisq_test <- chisq.test(table_data)
-print(chisq_test)
-
-stage_color <- c("early" = "#925E9FFF",
-                 "late" = "#FDAF91FF")
-
-# 创建数据
-table_data <- data.frame(
-  Stage = c("early", "late"),
-  high = c(6, 2),
-  low = c(1, 7)
-)
-
 # 定义颜色
 colors_late <- c("#FDAF91FF", adjustcolor("#FDAF91FF", alpha.f = 0.2))
 colors_early <- c("#925E9FFF", adjustcolor("#925E9FFF", alpha.f = 0.2))
@@ -918,7 +1010,7 @@ compaired <- list(c("early","late"))
 ggplot(data = tmp_info, aes(x = Stage, y = pct, color = Stage)) +
   geom_boxplot(aes(fill = Stage), alpha = 0.2, outlier.shape = NA) +  # 避免与抖动点重叠
   geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +  # 添加横向抖动
-  scale_y_continuous(name = "Pct of Texeff cells") +
+  scale_y_continuous(name = "Pct of CD8_Texeff cells") +
   scale_x_discrete(name = "") +
   theme_classic() +
   theme(
@@ -931,16 +1023,13 @@ ggplot(data = tmp_info, aes(x = Stage, y = pct, color = Stage)) +
   scale_color_manual(values = stage_color) +
   scale_fill_manual(values = stage_color)
 
-tmp_info$Stage <- factor(tmp_info$Stage)
-oneway_test(pct ~ Stage, data = tmp_info, distribution = "exact") 
-
 # fig4h
 aa <- tmp_info[tmp_info$Stage == "early",]
 ggplot(data = aa, aes(x = State, y = pct, color = State)) +
   geom_boxplot(aes(fill = State), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
   geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
   # geom_text(aes(label = PID)) +
-  scale_y_continuous(name = "Pct of Texeff cells") +
+  scale_y_continuous(name = "Pct of CD8_Texeff cells") +
   scale_x_discrete(name = "") +
   # ggtitle("Boxplot of CD8+ Tcell") +
   theme_classic() +
@@ -957,7 +1046,7 @@ ggplot(data = aa, aes(x = State, y = pct, color = State)) +
   geom_boxplot(aes(fill = State), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
   geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
   # geom_text(aes(label = PID)) +
-  scale_y_continuous(name = "Pct of Texeff cells") +
+  scale_y_continuous(name = "Pct of CD8_Texeff cells") +
   scale_x_discrete(name = "") +
   # ggtitle("Boxplot of CD8+ Tcell") +
   theme_classic() +
@@ -1073,7 +1162,45 @@ ggplot(data = ssgsea_exprSet_matrix[ssgsea_exprSet_matrix$Treat == "Pre_xRT",], 
               test = wilcox.test,
               color = "black")
 
+# fig4m
+compaired <- list(c("CR", "PR"),
+                  c("CR", "SD"),
+                  c("PR", "SD"))
+response_color <- c("CR" = "#8C9EBA",
+                    "PR" = "#D9E0E7", 
+                    "SD" = "#F3DBD6")
+ggplot(data = df[df$treat == "Pre",], aes(x = Response, y = pct, fill = Response)) +
+  geom_boxplot() +
+  # geom_point() +
+  # geom_text(aes(label = PID)) +
+  scale_y_continuous(name = "Pct of CD8T in CRT")+
+  scale_x_discrete(name = "") +
+  # ggtitle("Boxplot of CD8+ Tcell") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 14, face =  "bold"),
+        text = element_text(size = 12),
+        axis.title = element_text(face="bold"),
+        axis.text.x=element_text(size = 11)) +
+  scale_fill_manual(values = response_color) +
+  facet_wrap(~seurat_clusters, scales = "free_y") +
+  geom_signif(comparisons = compaired,
+              step_increase = 0.1,
+              map_signif_level = F,
+              test = wilcox.test)
+
 # fig4n
+library(survival)
+library(survminer)
+res.cut <- surv_cutpoint(tex.eff_info.tmp,
+                         time = "futime", event = "fustat",
+                         variables = "simple.score")
+res.cat <- surv_categorize(res.cut)
+head(res.cat)
+fit <- survfit(Surv(futime, fustat) ~ simple.score, data = res.cat)
+ggsurvplot(fit, data = res.cat, risk.table = FALSE, pval = TRUE, 
+           palette = c("#3c537a", "#ee9798"))
+
+# fig4o
 compaired <- list(c("response","non-response"))
 ggplot(data = ssgsea_dat.tmp, aes(x = respond, y = simple.score, color = respond)) +
   geom_boxplot(aes(fill = respond), alpha = 0.5) +  # 使用 aes 设置 fill 参数
@@ -1096,22 +1223,19 @@ ggplot(data = ssgsea_dat.tmp, aes(x = respond, y = simple.score, color = respond
               test = wilcox.test,
               color = "black")
 
-# fig4o
+# fig4p
 immdat.exp_matrix.1 <- gsva(immdat.exp, score_list, method='ssgsea', kcdf='Gaussian', abs.ranking=TRUE)
 immdat.exp_matrix.1 <- as.data.frame(t(immdat.exp_matrix.1))
 immdat.exp_matrix.1 <- merge(immdat.exp_matrix.1, p_inf[,c("Cancer","pfse","pfs","respond","best.resp")], by = 0)
 str(immdat.exp_matrix.1)
 immdat.exp_matrix.1$pfs.time <- as.numeric(immdat.exp_matrix.1$pfs)
 immdat.exp_matrix.1$pfs.event <- as.numeric(immdat.exp_matrix.1$pfse)
-tmp <- data.frame(t(immdat[c("PDCD1", "CTLA4", "CD274","CD8A","CXCL13","GZMK","HAVCR2"),]))
-tmp <- data.frame(t(immdat[c("HLA-DRA","CD74"),]))
-immdat.exp_matrix.1 <- merge(immdat.exp_matrix.1, tmp, by.x = 1, by.y = 0)
 immdat.exp_matrix.1$respond.event <- ifelse(immdat.exp_matrix.1$respond == "respond", 1, 0)
 
 #建立曲线
 rocobj1 <- roc(immdat.exp_matrix.1$respond.event, immdat.exp_matrix.1$tex.eff.score)
-rocobj2 <- roc(immdat.exp_matrix.1$respond.event, immdat.exp_matrix.1$new.score)
-rocobj3 <- roc(immdat.exp_matrix.1$respond.event, immdat.exp_matrix.1$simple.score)
+rocobj2 <- roc(immdat.exp_matrix.1$respond.event, immdat.exp_matrix.1$simple.score)
+rocobj3 <- roc(immdat.exp_matrix.1$respond.event, immdat.exp_matrix.1$mhc.score)
 #计算full AUC
 auc(rocobj1)
 auc(rocobj2)
@@ -1133,7 +1257,7 @@ legend("bottomright",
        bty = "n",     # 去掉图例框
        cex = 0.8)     # 缩小图例大小
 
-# fig4p
+# fig4q
 library(survival)
 library(survminer)
 res.cut <- surv_cutpoint(immdat.exp_matrix,
@@ -1146,7 +1270,7 @@ fit <- survfit(Surv(pfs.time, pfs.event) ~ simple.score, data = res.cat)
 ggsurvplot(fit, data = res.cat, risk.table = FALSE, pval = TRUE, 
            palette = c("#3c537a", "#ee9798"))
 
-# fig4q
+# fig4r
 response_color <- c("response" = "#9ab1d6",
                     "non-response" = "#fbc690")
 immdat.exp_matrix$respond <- ifelse(immdat.exp_matrix$respond.event == 1, "response", "non-response")
@@ -1157,6 +1281,51 @@ ggplot(immdat.exp_matrix, aes(x = class, fill = respond)) +
        title = "") +
   scale_fill_manual(values = response_color) +
   theme_classic()
+
+# fig4s
+res.cut <- surv_cutpoint(dat,
+                         time = "PFS", event = "PFS_event",
+                         variables = "RiskScore")
+res.cat <- surv_categorize(res.cut)
+head(res.cat)
+fit <- survfit(Surv(PFS, PFS_event) ~ RiskScore, data = res.cat)
+ggsurvplot(fit, data = res.cat, risk.table = FALSE, pval = TRUE, 
+           palette = c("#3c537a", "#ee9798"))
+
+# fig4t
+t1 <- 1825
+roc_3gene <- timeROC(
+  T = dat$PFS,
+  delta = dat$PFS_event,
+  marker = dat$RiskScore,
+  cause = 1,
+  times = t1,
+  iid = TRUE
+)
+
+roc_cxcl13 <- timeROC(
+  T = dat$PFS,
+  delta = dat$PFS_event,
+  marker = dat$RiskScore_cxcl13,
+  cause = 1,
+  times = t1,
+  iid = TRUE
+)
+
+auc_3gene  <- roc_3gene$AUC
+auc_cxcl13 <- roc_cxcl13$AUC
+
+# 5) 画在同一张图：先画三基因，再 add=TRUE 叠加 CXCL13
+plot(roc_3gene, time = t1, col = "#1F77B4", lwd = 2, title = FALSE)
+plot(roc_cxcl13, time = t1, col = "#D62728", lwd = 2, add = TRUE)
+
+legend(
+  "bottomright",
+  legend = c("IP score", "CXCL13"),
+  col    = c("#1F77B4","#D62728"),
+  lwd    = 2,
+  bty    = "n"
+)
 
 # fig5a
 CD4T_colors <- c(
@@ -1233,69 +1402,7 @@ tmp_info %>%
   # ggtitle("Proportional Stacked Bar Chart of Cell Class by Sample Type") +
   scale_fill_manual(values = cd4t_colors)
 
-# fig5f
-tmp_info <- dplyr::select(cd4t_tmp@meta.data, "cell_class", "NeoTCR4")
-tmp_info$cell_class <- factor(tmp_info$cell_class, levels = c("CD4T_Tnaive","CD4T_Tpex","CD4T_Texint","CD4T_Texeff","CD4T_Texterm","Tfh","Th17","Treg"))
-compaired <- list(c("CD4T_Texeff","CD4T_Texint"),
-                  c("CD4T_Texeff","Treg"))
-ggplot(data = tmp_info, aes(x = cell_class, y = NeoTCR4, fill = cell_class)) +
-  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
-  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
-  stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    # axis.text.x = element_blank(),  # 隐藏横轴文字
-    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
-    legend.position = "none"  # 移除图例
-  ) +
-  scale_fill_manual(values = cd4t_colors) 
-
-# fig5h
-# 肿瘤与淋巴结中各类CD4T细胞差异
-tmp_info <- select(cd4t_2@meta.data, "PID","State","sampleType")
-tmp_info <- pivot_longer(tmp_info, cols = 5:7, names_to = "seurat_clusters", values_to = "pct")
-tmp_info$seurat_clusters <- ifelse(tmp_info$seurat_clusters == "foxp3.score", "CD4T_Treg",
-                                   ifelse(tmp_info$seurat_clusters == "naive.score", "CD4T_naive", "CD4T_CXCR5"))
-tmp_info <- filter(tmp_info, seurat_clusters %in% c("CD4T_Treg","CD4T_naive"))
-
-result <- tmp_info %>%
-  group_by(PID, sampleType, seurat_clusters) %>%  # 按PID, sampleType, seurat_clusters分组
-  summarise(median_pct = median(pct, na.rm = TRUE)) %>%  # 计算中位值，去除NA值
-  ungroup()  # 取消分组
-
-tmp_info <- merge(tmp_info, result, by = c("PID","sampleType","seurat_clusters"))
-
-compaired <- list(c("MSI","MSS"))
-ggplot(data = tmp_info[tmp_info$sampleType == "PLN", ], 
-       aes(x = State, y = pct, color = State)) +
-  geom_boxplot(aes(fill = State), alpha = 0.2, outlier.color = "white") +  # 使用 aes 设置 fill 参数
-  scale_y_continuous(name = "CD4T cells in TdLNs") +
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 12),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 x 轴的题目
-    axis.text.x = element_text(size = 11),
-    legend.position = "none"         # 去掉图例
-  ) +
-  scale_color_manual(values = ms_colors) +
-  scale_fill_manual(values = ms_colors) +  # 设置 fill 的颜色
-  facet_wrap(~seurat_clusters) +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = FALSE,
-    test = wilcox.test,
-    color = "black"
-  )
-
-# fig5i
-# Tpex/Treg/Th1-like比例间的关系
+# fig5f-g
 tmp_info <- data.frame(cd4t_tmp$PID, cd4t_tmp$orig.ident, cd4t_tmp$cell_class)
 names(tmp_info) <- c("PID","SID","seurat_clusters")
 tmp_info <- dplyr::group_by(tmp_info, SID, seurat_clusters) %>%
@@ -1311,6 +1418,29 @@ tmp_info.1$sampleType <- str_sub(tmp_info.1$SID,5,7)
 tmp_info.1 <- dplyr::filter(tmp_info.1, sampleType == "PLN")
 tmp_info.1$State <- factor(tmp_info.1$State, levels = c("MSI","MSS"))
 tmp_info.1 <- arrange(tmp_info.1, desc(State))
+
+ggplot(data = tmp_info.1,  aes(x = State, y = pct, color = State)) +
+  geom_violin(aes(fill = State), scale = "width", alpha = 0.2) +
+  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white") +
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    text = element_text(size = 12),
+    axis.title = element_text(face = "bold"),
+    axis.title.x = element_blank(),  # 去掉 x 轴的题目
+    axis.text.x = element_text(size = 11),
+    legend.position = "none"         # 去掉图例
+  ) +
+  scale_color_manual(values = ms_colors) +
+  scale_fill_manual(values = ms_colors) +  # 设置 fill 的颜色
+  facet_wrap(~seurat_clusters, scales = "free_y") +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test,
+    color = "black"
+  )
 
 result <- tmp_info.1 %>%
   filter(seurat_clusters %in% c("CD4T_Tpex", "Treg")) %>%  # 仅选择 CD4T_Tpex 和 Treg
@@ -1349,26 +1479,12 @@ ggplot(data = result,
     color = "black"
   )
 
-# fig5j
-tmp_info <- data.frame(cd4t_2[, cd4t_2$sampleType== "CRT"]$PID, cd4t_2[, cd4t_2$sampleType == "CRT"]$cell_annotation)
-names(tmp_info) <- c("PID","seurat_clusters")
-tmp_info <- group_by(tmp_info, PID, seurat_clusters) %>%
-  summarise(n = n())
-aa <- group_by(tmp_info, PID) %>%
-  summarise(SUM = sum(n))
-
-tmp_info <- merge(tmp_info, aa, by = "PID")
-tmp_info$pct <- tmp_info$n/tmp_info$SUM
-tmp_info$State <- ifelse(tmp_info$PID %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42", "P44", "P48"), "MSI", "MSS")
-
+# fig5h
 compaired <- list(c("MSI","MSS"))
-
-ggplot(data = tmp_info[tmp_info$seurat_clusters == "CD4T_CXCL13",], 
+ggplot(data = tmp_info[tmp_info$sampleType == "CRT", ], 
        aes(x = State, y = pct, color = State)) +
   geom_boxplot(aes(fill = State), alpha = 0.2, outlier.color = "white") +  # 使用 aes 设置 fill 参数
-  geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
-  geom_text(aes(label = PID)) +
-  scale_y_continuous(name = "CD4_Texeff cells in CRT") +
+  scale_y_continuous(name = "CD4T cells in CRT") +
   theme_classic() +
   theme(
     plot.title = element_text(size = 14, face = "bold"),
@@ -1389,8 +1505,90 @@ ggplot(data = tmp_info[tmp_info$seurat_clusters == "CD4T_CXCL13",],
     color = "black"
   )
 
-# fig5k
-# Tex-eff数量与CXCL13+CXCR5-CD8+T正相关
+# fig5i
+T_data_cd4 <- T_data_cd4 %>%
+  mutate(X = (XMin + XMax) / 2) %>%
+  mutate(Y = (YMin + YMax) / 2)
+T_data_cd4_info <- dplyr::select(T_data_cd4, "Analysis Region", "CD4+IL21+IFNy+",
+                                    "X", "Y")
+T_data_cd4_info$cell_annotation <- ifelse(T_data_cd4_info$`CD4+IL21+IFNy+` == 1, "CD4_Texeff", T_data_cd4_info$`Analysis Region`)
+table(T_data_cd4_info$cell_annotation)
+color_map <- c(
+  "IM" = "#acd6ea",       # 比 lightgrey 更浅的灰色
+  "NR" = "#cfe0a6",
+  "TC" = "#fcf1f0",
+  "CD4_Texeff" = "#8357ad"
+)
+
+ggplot() +
+  geom_point(
+    data = subset(T_data_cd4_info, !cell_annotation == "CD4_Texeff"),
+    aes(x = X, y = Y, color = cell_annotation),
+    size = .1
+  ) +
+  geom_point(
+    data = subset(T_data_cd4_info, cell_annotation %in% c("CD4_Texeff")),
+    aes(x = X, y = Y, color = cell_annotation),
+    size = .2
+  ) +
+  # 自定义颜色映射
+  scale_color_manual(values = color_map) +
+  # 自定义图例点大小
+  guides(color = guide_legend(override.aes = list(size = 5))) +
+  theme_cowplot() +
+  theme(
+    legend.title = element_blank(),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  )
+
+# fig5j-k
+compaired <- c("MSI","MSS")
+ggplot(data = cd4texeff_info, aes(x = State, y = Density, color = State)) +
+  geom_boxplot(aes(fill = State), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
+  geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
+  # geom_text(aes(label = PID)) +
+  scale_y_continuous(name = "Density of CD4_Texeff cells/ROI") +
+  scale_x_discrete(name = "") +
+  facet_wrap(.~Sample) +
+  theme_classic() +
+  theme(plot.title = element_text(size = 14, face = "bold"),
+        text = element_text(size = 12),
+        axis.title = element_text(face = "bold"),
+        axis.text.x = element_text(size = 11),
+        legend.position = "none") +
+  scale_color_manual(values = ms_colors) +
+  scale_fill_manual(values = ms_colors) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+ggplot(data = cd4texeff_info, aes(x = State, y = Ration_CD4, color = State)) +
+  geom_boxplot(aes(fill = State), alpha = 0.2, outlier.shape = NA) +  # 使用 aes 设置 fill 参数
+  geom_point(position = position_jitter(width = 0.1, height = 0), size = 1) +
+  # geom_text(aes(label = PID)) +
+  scale_y_continuous(name = "Ratio of CD4_Texeff/CD4+T") +
+  scale_x_discrete(name = "") +
+  facet_wrap(.~Sample) +
+  theme_classic() +
+  theme(plot.title = element_text(size = 14, face = "bold"),
+        text = element_text(size = 12),
+        axis.title = element_text(face = "bold"),
+        axis.text.x = element_text(size = 11),
+        legend.position = "none") +
+  scale_color_manual(values = ms_colors) +
+  scale_fill_manual(values = ms_colors) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+# fig5l
 cd4t_info <- data.frame(cd4t_2[, cd4t_2$sampleType== "CRT"]$PID, cd4t_2[, cd4t_2$sampleType == "CRT"]$cell_annotation)
 names(cd4t_info) <- c("PID","seurat_clusters")
 cd4t_info <- group_by(cd4t_info, PID, seurat_clusters) %>%
@@ -1399,6 +1597,7 @@ aa <- group_by(cd4t_info, PID) %>%
   summarise(SUM = sum(n))
 cd4t_info <- merge(cd4t_info, aa, by = "PID")
 cd4t_info$pct <- cd4t_info$n/cd4t_info$SUM
+
 tmp_info <- data.frame(cd8t_tmp[, cd8t_tmp$sampleType== "CRT"]$PID, cd8t_tmp[, cd8t_tmp$sampleType == "CRT"]$cell_class)
 names(tmp_info) <- c("PID","seurat_clusters")
 tmp_info <- group_by(tmp_info, PID, seurat_clusters) %>%
@@ -1410,6 +1609,7 @@ tmp_info$pct <- tmp_info$n/tmp_info$SUM
 tmp_info$State <- ifelse(tmp_info$PID %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42", "P44", "P48"), "MSI", "MSS")
 tmp_info <- merge(tmp_info, cd4t_info, by = "PID")
 tmp_info_1 <- filter(tmp_info, seurat_clusters.x == "Tex_eff" & seurat_clusters.y == "CD4T_CXCL13")
+
 library(ggpmisc)
 model <- lm(pct.x ~ pct.y, data = tmp_info_1)
 r_squared <- summary(model)$adj.r.squared
@@ -1425,47 +1625,28 @@ ggplot(tmp_info_1, aes(x = pct.y, y = pct.x, color = State)) +
            size = 5, hjust = 0, vjust = 1, parse = FALSE) +
   scale_color_manual(values = c("MSI" = "#ED0000FF", "MSS" = "#00468BFF"))
 
-# fig5l
-tmp <- subset(cd4t_2, sampleType == "CRT")
-aa <- tmp@assays$RNA@scale.data
-aa <- as.data.frame(aa[c("IL21","IFNG"),])
-aa <- as.data.frame(t(aa))
-identical(rownames(aa), rownames(tmp[[]]))
-aa$State <- ifelse(str_sub(rownames(aa),1,3) %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42"), "MSI", "MSS")
-
-# 初始化一个空列表存储图
-plots <- list()
-# 循环生成每个基因的小提琴图
-for (gene in genes) {
-  p <- ggplot(aa, aes_string(x = "State", y = gene, fill = "State", colour = "State")) +
-    geom_violin() +  # 小提琴图边界为白色
-    # geom_signif(comparisons = compaired,
-    #             step_increase = 0.3,
-    #             map_signif_level = F,
-    #             test = wilcox.test,
-    #             color = "black") +
-    scale_fill_manual(values = ms_colors) +
-    scale_color_manual(values = ms_colors) +
-    theme_bw() +
-    labs(x = "", y = gene) +  # 移除x轴标题，y轴标题为基因名
-    theme(
-      panel.grid = element_blank(),            # 去掉背景横线和竖线
-      axis.title = element_blank(),            # 去掉 X 和 Y 轴的标题
-      axis.text = element_blank(),             # 去掉 X 和 Y 轴的文字
-      axis.ticks = element_blank(),            # 去掉 X 和 Y 轴的刻度
-      legend.position = "none"                 # 去掉图例
-    )
-  plots[[gene]] <- p  # 将图存储到列表中
-}
-
-final_plot <- plot_grid(
-  plots[["IL21"]], plots[["IFNG"]],
-  # plots[["IL21R"]], plots[["IFNGR1"]],
-  ncol = 1, align = "hv"
-)
-final_plot
-
 # fig5m
+DotPlot(cd4t_tmp[, cd4t_tmp$sampleType == "CRT"], features = c("IFNG", "IL21"), group.by = "State") + 
+  coord_flip() +
+  labs(
+    title = "",  # 设置图的标题
+    x = "",     # 设置x轴标签
+    y = ""      # 设置y轴标签
+  ) +
+  scale_color_gradient2(low = "#4575b4", high = "#d73027") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+DotPlot(cd8t_tmp[, cd8t_tmp$sampleType == "CRT"], features = c("IL21R"), group.by = "State") + 
+  coord_flip() +
+  labs(
+    title = "",  # 设置图的标题
+    x = "",     # 设置x轴标签
+    y = ""      # 设置y轴标签
+  ) +
+  scale_color_gradient2(low = "#4575b4", high = "#d73027") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# fig5n
 library(ggplot2)
 plot <- FeaturePlot(cd8t_tmp, features = "IL21R")
 data <- plot$data
@@ -1523,44 +1704,55 @@ ggplot(data, aes(x = x, y = y)) +
     axis.ticks = element_blank()             # 去掉 X 和 Y 轴的刻度
   )
 
-# fig5n
-tmp <- subset(cd8t_1, sampleType == "CRT")
-aa <- tmp@assays$RNA@data
-aa <- as.data.frame(aa[c("IL21R","IFNGR1"),])
-aa <- as.data.frame(t(aa))
-identical(rownames(aa), rownames(tmp[[]]))
-aa$State <- ifelse(str_sub(rownames(aa),1,3) %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42"), "MSI", "MSS")
-# 初始化一个空列表存储图
-plots <- list()
-# 循环生成每个基因的小提琴图
-for (gene in c("IL21R","IFNGR1")) {
-  p <- ggplot(aa, aes_string(x = "State", y = gene, fill = "State", colour = "State")) +
-    geom_violin() +  # 小提琴图边界为白色
-    # geom_signif(comparisons = compaired,
-    #             step_increase = 0.3,
-    #             map_signif_level = F,
-    #             test = wilcox.test,
-    #             color = "black") +
-    scale_fill_manual(values = ms_colors) +
-    scale_color_manual(values = ms_colors) +
-    theme_bw() +
-    labs(x = "", y = gene) +  # 移除x轴标题，y轴标题为基因名
-    theme(
-      panel.grid = element_blank(),            # 去掉背景横线和竖线
-      axis.title = element_blank(),            # 去掉 X 和 Y 轴的标题
-      axis.text = element_blank(),             # 去掉 X 和 Y 轴的文字
-      axis.ticks = element_blank(),            # 去掉 X 和 Y 轴的刻度
-      legend.position = "none"                 # 去掉图例
-    )
-  plots[[gene]] <- p  # 将图存储到列表中
-}
+# fig5o
+import_para_summary$mean_importance[is.na(import_para_summary$mean_importance)] <- 0
+top10_df <- import_para_summary %>%
+  filter(Predictor == target_of_interest) %>%        
+  group_by(Target) %>%
+  summarise(
+    mean_importance = mean(mean_importance, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_importance)) %>%               # 从大到小排序
+  slice_head(n = 10) %>%                           # 取前 10 个
+  mutate(
+    Rank = row_number(),                           # 1~10
+    Target = factor(Target, levels = Target)  # 按重要性顺序固定颜色 legend
+  )
+top10_df
 
-final_plot <- plot_grid(
-  # plots[["IL21"]], plots[["IFNG"]],
-  plots[["IL21R"]], plots[["IFNGR1"]],
-  ncol = 1, align = "hv"
-)
-final_plot
+top10_df <- top10_df %>%
+  mutate(
+    Target = factor(Target, levels = Target)  # 按重要性顺序
+  )
+
+p <- ggplot(
+  top10_df,
+  aes(x = Target, y = mean_importance, color = Target, size = mean_importance)
+) +
+  geom_point(alpha = 1) +
+  scale_size_continuous(range = c(3, 10)) +
+  theme_cowplot() +
+  labs(
+    x = "",
+    y = "Mean importance",
+    title = ""
+  ) +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
+  ) +
+  scale_color_manual(values = c("Mac_NTM_THBS1" = "#ffaf75",
+                                "Mac_IL10" = "#ffaf75",
+                                "Mac_MMP9" = "#d58f5c",
+                                "gdT_TRDV1" = "#9869aa",
+                                "NK_TRDV1_like" = "#cae4f3",
+                                "NK_SELL" = "#74daf3",
+                                "Bcell_Memory" = "grey",
+                                cd8t_colors,
+                                CD4T_colors))
+
+p
 
 # fig6a
 dc.deg <- FindMarkers(subset(dc, sampleType == "CRT"),
@@ -1626,14 +1818,6 @@ ego_BP <- enrichGO(gene          = row.names(deg.sig.up),
 ego_bp <- data.frame(ego_BP)
 ego_bp <- ego_bp[order(ego_bp$Count, decreasing = TRUE),]
 ego_bp$Description <- factor(ego_bp$Description, levels = ego_bp$Description)
-ggplot(data = ego_bp[1:12,], aes(x = Description, y = Count)) + 
-  geom_bar(stat="identity", width=0.8, aes(fill = p.adjust)) + 
-  coord_flip() + xlab("") + ylab("") + 
-  theme_classic(base_size = 12) +
-  scale_fill_gradient(low = "#AD002AFF", high = "#ADB6B6FF") +
-  scale_x_discrete(labels=function(x) str_wrap(x, width = 50)) +
-  theme(axis.text = element_text(face = "bold"),
-        legend.position = "none")  # 加粗坐标轴文字
 ego_bp <- separate(data = ego_bp, 
                    col = GeneRatio,
                    into = c("GR1", "GR2"), 
@@ -1661,29 +1845,6 @@ tmp_info <- dplyr::select(dc@meta.data, "PID", "sampleType", "IFN_MHCII_Score","
 compaired <- list(c("MSS","MSI"))
 tmp_info$State <- ifelse(tmp_info$PID %in% c("P02", "P03", "P08", "P17", "P24", "P27", "P42"), "MSI", "MSS")
 tmp_info <- filter(tmp_info, sampleType == "CRT")
-ggplot(data = tmp_info, aes(x = State, y = IFN_MHCII_Score, fill = State)) +
-  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
-  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
-  scale_y_continuous(name = "IFN Response Score")+
-  scale_x_discrete(name = "State") +
-  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    # axis.text.x = element_blank(),  # 隐藏横轴文字
-    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
-    legend.position = "none"  # 移除图例
-  ) +
-  scale_fill_manual(values = ms_colors) +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = FALSE,
-    test = wilcox.test
-  )
 tmp_info <- pivot_longer(tmp_info, cols = c(4,5), names_to = "IFN_Response_Pathway", values_to = "IFN_Score")
 ggplot(data = tmp_info, aes(x = State, y = IFN_Score, fill = State)) +
   geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
@@ -1711,6 +1872,75 @@ ggplot(data = tmp_info, aes(x = State, y = IFN_Score, fill = State)) +
   )
 
 # fig6d
+deg_dc.tdln <- FindMarkers(subset(dc, sampleType == "PLN"),
+                           ident.1 = "MSI", ident.2 = "MSS",
+                           group.by = "State")
+
+deg_dc.tdln.sig <- deg_dc.tdln %>% filter(p_val_adj < 0.05)
+deg_dc.tdln.up <- rownames(filter(deg_dc.tdln.sig, avg_log2FC > 0.5))
+deg_dc.tdln.down <- rownames(filter(deg_dc.tdln.sig, avg_log2FC < -0.5))
+
+# fig6e
+library(clusterProfiler)
+library(org.Hs.eg.db)
+ego_BP <- enrichGO(gene          = deg_dc.tdln.up,
+                   OrgDb         = 'org.Hs.eg.db',
+                   keyType       = 'SYMBOL',
+                   ont           = "BP",
+                   pAdjustMethod = "BH",
+                   pvalueCutoff  = 0.05,
+                   qvalueCutoff  = 0.05) 
+ego_bp <- data.frame(ego_BP)
+ego_bp <- ego_bp[order(ego_bp$Count, decreasing = TRUE),]
+ego_bp <- separate(data = ego_bp, 
+                   col = GeneRatio,
+                   into = c("GR1", "GR2"), 
+                   sep = "/")
+ego_bp <- mutate(ego_bp, 
+                 GeneRatio = (as.numeric(GR1)/as.numeric(GR2)))
+ggplot(ego_bp, aes(x = GeneRatio, y = Description)) +
+  geom_segment(aes(x = 0, xend = GeneRatio, y = Description, 
+                   yend = Description, color = -log10(p.adjust)), size = 1.5) + # 调整线段粗细
+  geom_point(aes(size = Count, color = -log10(p.adjust))) +
+  scale_y_discrete(labels = ego_bp_top10$Description_wrapped) + # 使用换行后的标签
+  scale_color_gradient(low = "#fdc5b8", high = "#d85152") +
+  labs(
+    x = "GeneRatio",
+    y = NULL,
+    # title = "Lollipop Plot for Pathway Enrichment",
+    color = "-log10(P.adjust)",
+    size = "Count"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.y = element_text(size = 8),
+    axis.title.x = element_text(size = 10)
+  )
+
+# fig6f
+tmp_info <- dplyr::select(dc@meta.data, "IFNA_Response_Score", "IFNG_Response_Score", "STING_Score", "State", "sampleType", "cell_annotation")
+ggplot(data = tmp_info[tmp_info$sampleType == "PLN",], aes(x = State, y = IFNG_Response_Score, fill = State)) +
+  geom_violin(scale = "width", color = "white") +
+  geom_boxplot(width = 0.1, position = position_dodge(width = 0.9), outlier.alpha = 0, color = "black") +
+  theme_classic() +
+  # theme(
+  #   plot.title = element_text(size = 14, face = "bold"),
+  #   text = element_text(size = 10),
+  #   axis.title = element_text(face = "bold"),
+  #   axis.title.x = element_blank(),  # 去掉 X 轴的标题
+  #   axis.text.x = element_blank(),  # 隐藏横轴文字
+  #   axis.ticks.x = element_blank(),  # 隐藏横轴刻度
+  #   legend.position = "none"  # 移除图例
+  # ) +
+  scale_fill_manual(values = ms_colors) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = TRUE,
+    test = wilcox.test
+  )
+
+# fig6g
 mac.deg <- FindMarkers(subset(mac, sampleType == "CRT"),
                        ident.1 = "MSI", ident.2 = "MSS",
                        group.by = "State", min.pct = 0.1,  
@@ -1745,13 +1975,48 @@ p <- deg %>%
   scale_color_manual(values=c("Down"="#00468BFF", "Else"="grey", "Up"="#ED0000FF"))
 p
 
-# fig6f
+# fig6h
+library(clusterProfiler)
+library(org.Hs.eg.db)
+deg.sig.up <- subset(mac.deg.tmp, avg_log2FC > 0.5)
+ego_BP <- enrichGO(gene          = row.names(deg.sig.up),
+                   OrgDb         = 'org.Hs.eg.db',
+                   keyType       = 'SYMBOL',
+                   ont           = "BP",
+                   pAdjustMethod = "BH",
+                   pvalueCutoff  = 0.05,
+                   qvalueCutoff  = 0.05) 
+ego_bp <- data.frame(ego_BP)
+ego_bp <- ego_bp[order(ego_bp$Count, decreasing = TRUE),]
+ego_bp$Description <- factor(ego_bp$Description, levels = ego_bp$Description)
+ego_bp <- separate(data = ego_bp, 
+                   col = GeneRatio,
+                   into = c("GR1", "GR2"), 
+                   sep = "/")
+ego_bp <- mutate(ego_bp, 
+                 GeneRatio = (as.numeric(GR1)/as.numeric(GR2)))
+# library(forcats)
+ggplot(ego_bp[1:12,], aes(x = GeneRatio,y= fct_reorder(Description, GeneRatio)))+#将term顺序按照GeneRatio进行排序
+  geom_point(aes(size = Count,fill = p.adjust),
+             shape = 21,
+             color = 'black')+
+  #修改气泡图颜色
+  scale_fill_gradient(low='#E27371',high = '#5D82A7')+
+  #标题修改
+  labs(title='GO Enrichment',
+       y='GO term',
+       x='GeneRatio')+
+  guides(fill=guide_colorbar(reverse = T,order=1))+
+  theme_bw() +
+  theme(axis.text = element_text(face = "bold")) 
+
+# fig6i
 DimPlot(mac, reduction = "umap", group.by = "cell_annotation", label = F, raster = FALSE) +
   guides(color = guide_legend(override.aes = list(size = 6))) +
   ggsci::scale_color_igv() +
   labs(title = NULL)
 
-# fig6g
+# fig6j
 tmp_info <- data.frame(mac[, mac$sampleType== "CRT"]$PID, mac[, mac$sampleType == "CRT"]$cell_annotation)
 names(tmp_info) <- c("PID","seurat_clusters")
 tmp_info <- group_by(tmp_info, PID, seurat_clusters) %>%
@@ -1787,7 +2052,7 @@ ggplot(data = tmp_info[tmp_info$seurat_clusters == "Mac_CXCL10",],
     color = "black"
   )
 
-# fig6h-i
+# fig6k-l
 netVisual_aggregate(cellchat_obj, signaling = pathways.show, 
                     layout = "circle", color.use = NULL, 
                     sources.use = Mac_CXCL10, targets.use = NULL, 
@@ -1799,12 +2064,48 @@ netVisual_individual(cellchat_obj, signaling = pathways.show, pairLR.use = LR.sh
 netVisual_bubble(
   cellchat_obj,
   sources.use = "Mac_CXCL10",
-  targets.use = c("CD8T_CXCL13", "CD4T_CXCL13"),
+  targets.use = c("CD8_Texeff", "CD4_Texeff"),
   signaling = "CXCL",
   remove.isolate = FALSE
 )
 
-# fig6j-l
+# fig6m
+ggplot(data = meta_mac,
+       aes(x = level3, y = prop_log10, fill = level3, colour = level3)) +
+  geom_sina(alpha = 1, size = 0.5) +
+  geom_point(
+    data = q90_df,
+    aes(x = level3, y = q90),
+    inherit.aes = FALSE,
+    color = "grey20",
+    size = 2
+  ) +
+  geom_line(
+    data = q90_df,
+    aes(x = level3, y = q90, group = 1),
+    inherit.aes = FALSE,
+    color = "grey50",
+    linewidth = 0.5
+  ) +
+  theme_cowplot() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    text = element_text(size = 10),
+    axis.title = element_text(face = "bold"),
+    axis.title.x = element_blank(),   # 跟你原来一样处理
+    axis.text.x  = element_blank(),
+    # axis.ticks.x = element_blank(),
+    legend.position = "none"
+  ) +
+  scale_fill_manual(values = tissue_colors) +
+  scale_color_manual(values = tissue_colors) +
+  labs(
+    y = "log10(Mac_CXCL10 RTCD)",
+    x = NULL,
+    title = ""
+  )
+
+# fig6n
 # ST
 Idents(mac) <- mac$cell_annotation
 mac_cxcl10.deg <- FindMarkers(mac,
@@ -1837,259 +2138,58 @@ SpatialPlot(st_object.p67,
             pt.size.factor = 2,
             stroke = NA) 
 
-SpatialPlot(st_object.p67,
-            features = "tls.score",
-            image.alpha = 0,
-            pt.size.factor = 2,
-            stroke = NA) 
-
 FeaturePlot(st_object.p67, features = "Mac_CXCL10.score", reduction='spatial') + 
   scale_y_reverse() + 
   scale_colour_viridis(option="inferno") + theme_void()
 
-tmp_info <- select(st_object.p67@meta.data, "level3", "Tex_eff.score", "Mac_CXCL10.score", "TLS.score")
-tmp_info <- pivot_longer(tmp_info, cols = c(2:4), names_to = "cell", values_to = "score")
-ggplot(data = tmp_info, aes(x = level3, y = score, fill = level3)) +
-  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
-  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
-  stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    axis.text.x = element_blank(),  # 隐藏横轴文字
-    axis.ticks.x = element_blank(),  # 隐藏横轴刻度
-    legend.position = "none"  # 移除图例
-  ) +
-  facet_wrap(~cell)+
-  scale_fill_manual(values = tissue_colors) +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = TRUE,
-    test = wilcox.test
+# fig6o
+import_para_summary$mean_importance[is.na(import_para_summary$mean_importance)] <- 0
+top10_df <- import_para_summary %>%
+  filter(Predictor == target_of_interest) %>%        
+  group_by(Target) %>%
+  summarise(
+    mean_importance = mean(mean_importance, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_importance)) %>%               # 从大到小排序
+  slice_head(n = 10) %>%                           # 取前 10 个
+  mutate(
+    Rank = row_number(),                           # 1~10
+    Target = factor(Target, levels = Target)  # 按重要性顺序固定颜色 legend
+  )
+top10_df
+
+top10_df <- top10_df %>%
+  mutate(
+    Target = factor(Target, levels = Target)  # 按重要性顺序
   )
 
-library(ggpmisc)
-model <- lm(Tex_eff.score ~ Mac_CXCL10.score, data = tmp_info)
-r_squared <- summary(model)$adj.r.squared
-p_value <- summary(model)$coefficients[2, 4]
-ggplot(tmp_info, aes(x = Mac_CXCL10.score, y = Tex_eff.score, color = level3)) +
-  geom_point(size = 1) +  # 添加点
-  theme_classic() +
-  geom_smooth(method = "lm", color = "black", se = FALSE) +
-  scale_y_continuous(name = "Proportion of CD8_Texeff") +
-  scale_x_continuous(name = "Proportion of Mac_CXCL10") +
-  # 显示R²和p值，不区分State
-  annotate("text", x = 0.05, y = 0.5, label = sprintf("adj.R² = %.3f, p = %.3g", round(r_squared, digits = 2), round(p_value, digits = 2)),
-           size = 5, hjust = 0, vjust = 1, parse = FALSE) +
-  scale_color_manual(values = tissue_colors) +
-  labs(color = "Region")  # 修改legend标题为Region
-
-# fig8a
-plot <- DimPlot(epi.nmf, reduction = "umap", group.by = "seurat_clusters", label = F, raster = FALSE) +
-  ggsci::scale_color_lancet() +
-  guides(color = guide_legend(override.aes = list(size = 6))) +
-  labs(title = NULL)
-ggsave(
-  filename = "epi_plot.eps",   # 保存文件名
-  plot = plot,          # 保存的 ggplot 对象（比如第一个图）
-  device = "eps",             # 选择 eps 格式
-  width = 8,                  # 图宽（单位：英寸）
-  height = 6,                 # 图高（单位：英寸）
-  units = "in",               # 尺寸单位（可以是 "in", "cm", 或 "mm"）
-  dpi = 300                   # 分辨率（适用于光栅格式，但仍然推荐设定）
-)
-
-# fig8b
-# 绘制点图
-H_long$Gene <- factor(H_long$Gene, levels = combined_vector)
-library(ggplot2)
-library(viridis)
-ggplot(H_long, aes(x = Gene, y = Gene_module, size = Weight, color = Weight)) +
-  geom_point(alpha = 1) +  
-  scale_size(range = c(1,6)) +  # 调整点大小范围
-  scale_color_viridis_c(option = "D", direction = -1) +  # 使用 Viridis 色板
-  theme_classic() +  # 使用简洁主题
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1),  # 旋转 x 轴标签以避免重叠
-    axis.title = element_text(size = 14),
-    axis.text = element_text(size = 10),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    axis.title.y = element_blank()  
-  ) +
+p <- ggplot(
+  top10_df,
+  aes(x = Target, y = mean_importance, color = Target, size = mean_importance)
+) +
+  geom_point(alpha = 1) +
+  scale_size_continuous(range = c(3, 10)) +
+  theme_cowplot() +
   labs(
-    x = "Gene",
-    y = "Gene Module",
-    size = "Weight",
-    color = "Weight"
-    # title = "Gene Contributions to Modules"
-  )
-
-# fig8e
-# 在MSI与MSS肿瘤上皮中找差异基因
-epi.deg <- FindMarkers(epi.nmf,
-                       ident.1 = "MSI",
-                       ident.2 = "MSS",
-                       group.by = "State")
-deg <- epi.deg
-# 设置抖动
-jitter_height <- 0.1
-jitter <- position_jitter(height = jitter_height, seed = 1) ####Create a jitter object for reproducible jitter
-# 添加logp与pct
-correct_value = min(deg$p_val_adj[deg$p_val_adj > 0])
-deg$logp = -1* log10(ifelse(deg$p_val_adj > 0, deg$p_val_adj, correct_value))
-deg$pct <- ifelse(deg$avg_log2FC > 0, deg$pct.1, deg$pct.2)
-deg$gene_change <- ifelse((deg$avg_log2FC > 0.5 & deg$p_val_adj < 0.05), "Up",
-                          ifelse((deg$avg_log2FC < -0.5 & deg$p_val_adj < 0.05), "Down", "Else"))
-table(deg$gene_change)
-epi.deg.tmp <- filter(epi.deg, p_val_adj < 0.05)
-# 设置需要展示的基因名称
-epi.deg.tmp <- epi.deg.tmp %>% 
-  dplyr::arrange(desc(avg_log2FC))
-genes <- c("CD74","HLA-DRB1","HLA-DRA","HLA-DPA1","HLA-DRB5","HLA-DPB1","HLA-DMA","HLA-DQB1","HLA-DQA1",
-           "CXCL10","CD274",
-           "HSPA1A","CEACAM5","PLA2G10")
-deg$gene_name <- ifelse(rownames(deg) %in% genes, rownames(deg), NA)
-p <- deg %>% 
-  dplyr::arrange(desc(avg_log2FC)) %>%
-  ggplot(aes(x = avg_log2FC, y = logp, color = gene_change)) +
-  geom_point(aes(size = pct), position = jitter, alpha = 1) +  # 使用带有纵向抖动的 jitter
-  geom_text_repel(aes(x = avg_log2FC, y = logp, label = gene_name),
-                  color = "black", position = jitter, size = 3, fontface = "bold", 
-                  max.overlaps = 50, segment.color = "#808080") +  # 设置线的颜色为灰色
-  theme_bw(base_size = 15) +
-  ggtitle(paste0("DEGs of DC in MSI CRC TME")) +
-  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed") +  # log2FC = -0.3 和 0.3
-  geom_hline(yintercept = -log10(0.05), linetype = "dashed") +  # p = 0.01
-  theme(panel.grid = element_blank(),
-        plot.title = element_text(size = 15),
-        text = element_text(face = "bold")) +
-  scale_color_manual(values=c("Down"="#00468BFF", "Else"="grey", "Up"="#ED0000FF"))
+    x = "",
+    y = "Mean importance",
+    title = ""
+  ) +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
+  ) +
+  scale_color_manual(values = c("Mac_NTM_THBS1" = "#ffaf75",
+                                "Mac_IL10" = "#ffaf75",
+                                "Mac_MMP9" = "#d58f5c",
+                                "gdT_TRDV1" = "#9869aa",
+                                "NK_TRDV1_like" = "#cae4f3",
+                                "NK_SELL" = "#74daf3",
+                                "Bcell_Memory" = "grey",
+                                cd8t_colors,
+                                CD4T_colors))
 p
-
-# fig8f
-genelist <- c("CD274","HLA-DRA","CXCL10","PLA2G10","HSPA1A")
-# 创建一个列表来存储每个 FeaturePlot
-plots <- lapply(genelist, function(gene) {
-  FeaturePlot(epi.nmf, features = gene, pt.size = 1, split.by = "State") +
-    theme(strip.text = element_blank())
-})
-plots
-combined_plot <- wrap_plots(plots, ncol = 1, nrow = 5)
-combined_plot
-
-# fig8g/j
-# 对上皮细胞进行评分
-library(AUCell)
-auc_score <- list(
-  # "cGAS_STING_Score" = c("CGAS","TMEM173","TBK1","IKBKE","IRF3"),
-  "IFNA_Response_Score" = dplyr::filter(H_geneset, term == "HALLMARK_INTERFERON_ALPHA_RESPONSE")[,2],
-  "IFNG_Response_Score" = dplyr::filter(H_geneset, term == "HALLMARK_INTERFERON_GAMMA_RESPONSE")[,2],
-  # "IFN_MHCII_Score" = sting_ISG[sting_ISG$path == "IFN_MHCII",]$gene,
-  "STING_Score" = sting_score)
-cells_ranking <- AUCell_buildRankings(epi.nmf@assays$RNA@data)
-cells_auc <- AUCell_calcAUC(auc_score, cells_ranking, aucMaxRank = 0.1 * nrow(cells_ranking))
-aa <- as.data.frame(t(cells_auc@assays@data$AUC))
-tmp_info <- select(epi.nmf@meta.data, "PID","State","seurat_clusters")
-tmp_info <- merge(tmp_info, aa, by = 0)
-tmp_info <- pivot_longer(tmp_info, cols = c(5,6), names_to = "IFN_Response_Pathway", values_to = "IFN_Score")
-compaired <- list(c("MSI","MSS"))
-ggplot(data = tmp_info, aes(x = State, y = IFN_Score, fill = State)) +
-  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
-  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
-  scale_y_continuous(name = "IFN Response Score")+
-  scale_x_discrete(name = "State") +
-  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    # axis.text.x = element_blank(),  # 隐藏横轴文字
-    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
-    legend.position = "none"  # 移除图例
-  ) +
-  scale_fill_manual(values = ms_colors) +
-  facet_wrap(~IFN_Response_Pathway) +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = FALSE,
-    test = wilcox.test
-  )
-
-tmp_info <- dplyr::select(epi.nmf@meta.data, "PID", "STING_Score", "State")
-compaired <- list(c("MSI","MSS"))
-ggplot(data = tmp_info, aes(x = State, y = STING_Score, fill = State)) +
-  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
-  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
-  scale_y_continuous(name = "cGAS-STING Pathway Activation Score")+
-  scale_x_discrete(name = "State") +
-  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    # axis.text.x = element_blank(),  # 隐藏横轴文字
-    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
-    legend.position = "none"  # 移除图例
-  ) +
-  scale_fill_manual(values = ms_colors) +
-  # facet_wrap(~STING_Score) +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = FALSE,
-    test = wilcox.test
-  )
-
-# fig8i
-library(readxl)
-hscore_info <- read_excel("mifinfo.xlsx", sheet = "Sheet5", 
-                          col_types = c("text", "text", "numeric", "numeric"))
-ggplot(data = hscore_info, aes(x = State, y = Pla2g10, fill = State)) +
-  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
-  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
-  scale_y_continuous(name = "Pla2g10 IHC H-score")+
-  scale_x_discrete(name = "State") +
-  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
-  theme_classic() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    text = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    axis.title.x = element_blank(),  # 去掉 X 轴的标题
-    # axis.text.x = element_blank(),  # 隐藏横轴文字
-    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
-    legend.position = "none"  # 移除图例
-  ) +
-  scale_fill_manual(values = ms_colors) +
-  # facet_wrap(~STING_Score) +
-  geom_signif(
-    comparisons = compaired,
-    step_increase = 0.3,
-    map_signif_level = FALSE,
-    test = wilcox.test
-  )
-
-# fig8k
-tmp_info <- hscore_info[!is.na(hscore_info$Sting) & !is.na(hscore_info$Pla2g10),]
-cor_test <- cor.test(tmp_info$Sting, tmp_info$Pla2g10, method = "pearson")
-print(cor_test)
-ggplot(tmp_info, aes(x = Sting, y = Pla2g10, colour = State)) +
-  geom_point() +  # 添加点
-  theme_classic() +
-  geom_smooth(method = "lm", color = "black", se = FALSE) +
-  scale_y_continuous(name = "Expression of PLA2G10") +
-  scale_x_continuous(name = "Expression of STING") +
-  scale_color_manual(values = c("MSI" = "#ED0000FF", "MSS" = "#00468BFF"))
-
 
 # fig7a
 tmp_info <- data.frame(bpls[, bpls$sampleType== "CRT"]$PID, bpls[, bpls$sampleType == "CRT"]$antibody_class)
@@ -2168,6 +2268,9 @@ corrplot(correlation_matrix,
          col = colorRampPalette(c("navyblue", "white", "darkred"))(50) # 颜色渐变从蓝色到白色再到红色
 )
 
+# fig7e
+netVisual_individual(cellchat_obj, signaling = pathways.show, pairLR.use = LR.show, layout = "circle")
+
 # fig7f
 ggplot(data = result_df, aes(x = Spearman_Correlation, y = Median_Ratio, colour = cell_annotation)) +
   geom_point(size = 6) +
@@ -2204,6 +2307,13 @@ ggplot(data = ssgsea_coad_matrix, aes(x = cd4t.cxcl13.score, y = tls12.score)) +
                label.x = 0.05,  #位置 ，0-1之间的比例
                label.y = 0.95)
 
+# fig7h
+SpatialPlot(st_object.p67,
+            features = "tls.score",
+            image.alpha = 0,
+            pt.size.factor = 2,
+            stroke = NA) 
+
 # fig7k
 library(survival)
 library(survminer)
@@ -2216,5 +2326,268 @@ fit <- survfit(Surv(futime, fustat) ~ tls12.score, data = res.cat)
 ggsurvplot(fit, data = res.cat, risk.table = FALSE, pval = TRUE, 
            palette = c("#3c537a", "#ee9798"))
 
+# fig8a
+plot <- DimPlot(epi.nmf, reduction = "umap", group.by = "seurat_clusters", label = F, raster = FALSE) +
+  ggsci::scale_color_lancet() +
+  guides(color = guide_legend(override.aes = list(size = 6))) +
+  labs(title = NULL)
 
+# fig8b
+# 绘制点图
+H_long$Gene <- factor(H_long$Gene, levels = combined_vector)
+library(ggplot2)
+library(viridis)
+ggplot(H_long, aes(x = Gene, y = Gene_module, size = Weight, color = Weight)) +
+  geom_point(alpha = 1) +  
+  scale_size(range = c(1,6)) +  # 调整点大小范围
+  scale_color_viridis_c(option = "D", direction = -1) +  # 使用 Viridis 色板
+  theme_classic() +  # 使用简洁主题
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),  # 旋转 x 轴标签以避免重叠
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 10),
+    axis.title.x = element_blank(),  # 去掉 X 轴的标题
+    axis.title.y = element_blank()  
+  ) +
+  labs(
+    x = "Gene",
+    y = "Gene Module",
+    size = "Weight",
+    color = "Weight"
+    # title = "Gene Contributions to Modules"
+  )
 
+# fig8c
+df <- select(epi.nmf@meta.data, "PID","Stress_Response_Module","Antigen_Presentation_Module","Cell_Proliferation_Module",
+             "IFNγ_Response_Module","Mitochondrial_Detoxification_Module","Tumor_Marker_Module","Intestinal_Epithelial_Marker_Module1",
+             "Intestinal_Epithelial_Marker_Module2")
+result <- aggregate(. ~ PID, data = df, FUN = mean, na.rm = TRUE)
+rownames(result) <- result[,1]
+result <- result[,-1]
+colnames(result) <- paste0("P",1:8)
+result <- result[c("P03","P17","P24","P42","P25","P38","P41"),c("Module2","Module4","Module7","Module8","Module1","Module3","Module5","Module6")]
+result <- data.frame(t(result))
+anno <- data.frame(State = c(rep("MSI", 4), rep("MSS", 3)),
+                   row.names = colnames(result))
+
+# 绘制热图
+pheatmap::pheatmap(result, 
+                   scale = "row", 
+                   cluster_rows = FALSE, 
+                   cluster_cols = FALSE,
+                   annotation_col = anno,
+                   annotation_colors = colors,
+                   gaps_row = 4,
+                   gaps_col = 4,
+                   color = colorRampPalette(c("#547297", "#8C9EBA", "#D9E0E7","#F3DBD6", "#DA8F87", "#D54846"))(100),
+                   annotation_legend = FALSE)
+
+# fig8d
+ggplot(data = ego_bp[1:10,], aes(x = Description, y = Count)) + 
+  geom_bar(stat="identity", width=0.8, aes(fill = p.adjust)) + 
+  coord_flip() + xlab("") + ylab("") + 
+  theme_classic(base_size = 12) +
+  scale_fill_gradient(low = "#AD002AFF", high = "#ADB6B6FF") +
+  scale_x_discrete(labels=function(x) str_wrap(x, width = 50)) +
+  theme(axis.text = element_text(face = "bold"),
+        legend.position = "none")  # 加粗坐标轴文字
+
+# fig8e
+# 在MSI与MSS肿瘤上皮中找差异基因
+epi.deg <- FindMarkers(epi.nmf,
+                       ident.1 = "MSI",
+                       ident.2 = "MSS",
+                       group.by = "State")
+deg <- epi.deg
+# 设置抖动
+jitter_height <- 0.1
+jitter <- position_jitter(height = jitter_height, seed = 1) ####Create a jitter object for reproducible jitter
+# 添加logp与pct
+correct_value = min(deg$p_val_adj[deg$p_val_adj > 0])
+deg$logp = -1* log10(ifelse(deg$p_val_adj > 0, deg$p_val_adj, correct_value))
+deg$pct <- ifelse(deg$avg_log2FC > 0, deg$pct.1, deg$pct.2)
+deg$gene_change <- ifelse((deg$avg_log2FC > 0.5 & deg$p_val_adj < 0.05), "Up",
+                          ifelse((deg$avg_log2FC < -0.5 & deg$p_val_adj < 0.05), "Down", "Else"))
+table(deg$gene_change)
+epi.deg.tmp <- filter(epi.deg, p_val_adj < 0.05)
+# 设置需要展示的基因名称
+epi.deg.tmp <- epi.deg.tmp %>% 
+  dplyr::arrange(desc(avg_log2FC))
+genes <- c("CD74","HLA-DRB1","HLA-DRA","HLA-DPA1","HLA-DRB5","HLA-DPB1","HLA-DMA","HLA-DQB1","HLA-DQA1",
+           "CXCL10","CD274",
+           "HSPA1A","CEACAM5","PLA2G10")
+deg$gene_name <- ifelse(rownames(deg) %in% genes, rownames(deg), NA)
+p <- deg %>% 
+  dplyr::arrange(desc(avg_log2FC)) %>%
+  ggplot(aes(x = avg_log2FC, y = logp, color = gene_change)) +
+  geom_point(aes(size = pct), position = jitter, alpha = 1) +  # 使用带有纵向抖动的 jitter
+  geom_text_repel(aes(x = avg_log2FC, y = logp, label = gene_name),
+                  color = "black", position = jitter, size = 3, fontface = "bold", 
+                  max.overlaps = 50, segment.color = "#808080") +  # 设置线的颜色为灰色
+  theme_bw(base_size = 15) +
+  ggtitle(paste0("DEGs of DC in MSI CRC TME")) +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed") +  # log2FC = -0.3 和 0.3
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed") +  # p = 0.01
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 15),
+        text = element_text(face = "bold")) +
+  scale_color_manual(values=c("Down"="#00468BFF", "Else"="grey", "Up"="#ED0000FF"))
+p
+
+# fig8f
+genelist <- c("CD274","HLA-DRA","CXCL10","PLA2G10","HSPA1A")
+# 创建一个列表来存储每个 FeaturePlot
+plots <- lapply(genelist, function(gene) {
+  FeaturePlot(epi.nmf, features = gene, pt.size = 1, split.by = "State") +
+    theme(strip.text = element_blank())
+})
+plots
+combined_plot <- wrap_plots(plots, ncol = 1, nrow = 5)
+combined_plot
+
+# fig8g
+library(AUCell)
+auc_score <- list(
+  # "cGAS_STING_Score" = c("CGAS","TMEM173","TBK1","IKBKE","IRF3"),
+  "IFNA_Response_Score" = dplyr::filter(H_geneset, term == "HALLMARK_INTERFERON_ALPHA_RESPONSE")[,2],
+  "IFNG_Response_Score" = dplyr::filter(H_geneset, term == "HALLMARK_INTERFERON_GAMMA_RESPONSE")[,2],
+  # "IFN_MHCII_Score" = sting_ISG[sting_ISG$path == "IFN_MHCII",]$gene,
+  "STING_Score" = sting_score)
+cells_ranking <- AUCell_buildRankings(epi.nmf@assays$RNA@data)
+cells_auc <- AUCell_calcAUC(auc_score, cells_ranking, aucMaxRank = 0.1 * nrow(cells_ranking))
+aa <- as.data.frame(t(cells_auc@assays@data$AUC))
+tmp_info <- select(epi.nmf@meta.data, "PID","State","seurat_clusters")
+tmp_info <- merge(tmp_info, aa, by = 0)
+tmp_info <- pivot_longer(tmp_info, cols = c(5,6), names_to = "IFN_Response_Pathway", values_to = "IFN_Score")
+compaired <- list(c("MSI","MSS"))
+ggplot(data = tmp_info, aes(x = State, y = IFN_Score, fill = State)) +
+  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
+  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
+  scale_y_continuous(name = "IFN Response Score")+
+  scale_x_discrete(name = "State") +
+  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    text = element_text(size = 10),
+    axis.title = element_text(face = "bold"),
+    axis.title.x = element_blank(),  # 去掉 X 轴的标题
+    # axis.text.x = element_blank(),  # 隐藏横轴文字
+    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
+    legend.position = "none"  # 移除图例
+  ) +
+  scale_fill_manual(values = ms_colors) +
+  facet_wrap(~IFN_Response_Pathway) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+# fig8h
+tmp_info <- dplyr::select(epi.nmf@meta.data, "PID", "STING_Score", "State")
+compaired <- list(c("MSI","MSS"))
+ggplot(data = tmp_info, aes(x = State, y = STING_Score, fill = State)) +
+  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
+  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
+  scale_y_continuous(name = "cGAS-STING Pathway Activation Score")+
+  scale_x_discrete(name = "State") +
+  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    text = element_text(size = 10),
+    axis.title = element_text(face = "bold"),
+    axis.title.x = element_blank(),  # 去掉 X 轴的标题
+    # axis.text.x = element_blank(),  # 隐藏横轴文字
+    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
+    legend.position = "none"  # 移除图例
+  ) +
+  scale_fill_manual(values = ms_colors) +
+  # facet_wrap(~STING_Score) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+# fig8j
+ggplot(data = hscore_info, aes(x = State, y = Sting, fill = State)) +
+  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
+  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
+  scale_y_continuous(name = "STING IHC H-score")+
+  scale_x_discrete(name = "State") +
+  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    text = element_text(size = 10),
+    axis.title = element_text(face = "bold"),
+    axis.title.x = element_blank(),  # 去掉 X 轴的标题
+    # axis.text.x = element_blank(),  # 隐藏横轴文字
+    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
+    legend.position = "none"  # 移除图例
+  ) +
+  scale_fill_manual(values = ms_colors) +
+  # facet_wrap(~STING_Score) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+# fig8l
+ggplot(data = hscore_info, aes(x = State, y = Pla2g10, fill = State)) +
+  geom_violin(scale = "width", color = "white") +  # 小提琴图边框设置为透明
+  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +  # 箱线图边框透明
+  scale_y_continuous(name = "Pla2g10 IHC H-score")+
+  scale_x_discrete(name = "State") +
+  # stat_summary(fun = median, geom = "line", aes(group = 1), color = "grey", size = 0.5) +  # 绘制连接箱线图中点的折线
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    text = element_text(size = 10),
+    axis.title = element_text(face = "bold"),
+    axis.title.x = element_blank(),  # 去掉 X 轴的标题
+    # axis.text.x = element_blank(),  # 隐藏横轴文字
+    # axis.ticks.x = element_blank(),  # 隐藏横轴刻度
+    legend.position = "none"  # 移除图例
+  ) +
+  scale_fill_manual(values = ms_colors) +
+  # facet_wrap(~STING_Score) +
+  geom_signif(
+    comparisons = compaired,
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+# fig8m
+med_pla <- median(ihc_res_t_pla2g10$PLA2G10, na.rm = TRUE)
+ihc_res_t_pla2g10 <- ihc_res_t_pla2g10 %>%
+  mutate(
+    PLA2G10_group = ifelse(PLA2G10 >= med_pla, "High", "Low")
+  )
+ihc_res_t_pla2g10$PLA2G10_group <- factor(ihc_res_t_pla2g10$PLA2G10_group, levels = c("Low", "High"))
+
+ggplot(ihc_res_t_pla2g10, aes(x = PLA2G10_group, y = CD8, fill = PLA2G10_group)) +
+  geom_violin(aes(fill = PLA2G10_group), scale = "width", color = "white") +
+  geom_boxplot(width = 0.1, position = position_identity(), outlier.alpha = 0, fill = "white", color = "black") +
+  theme_classic() +
+  theme(
+    legend.position = "none"
+  ) +
+  scale_fill_manual(values = c("Low" = "#3c537a",
+                               "High" = "#ee9798")) +
+  geom_signif(
+    comparisons = list(c("Low", "High")),
+    step_increase = 0.3,
+    map_signif_level = FALSE,
+    test = wilcox.test
+  )
+
+lines <- readLines("/home/kongdeyang/MSI_CRC/MSIcode_fig.R")
+writeLines(lines, "/home/kongdeyang/MSI_CRC/myscript.txt")
